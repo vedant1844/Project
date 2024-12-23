@@ -1,0 +1,19 @@
+from google.colab import files
+uploaded = files.upload()
+#Code For Converting Pdf To Word
+import PyPDF2
+from docx import Document
+pdf_filename = list(uploaded.keys())[0]
+doc = Document()
+with open (pdf_filename, 'rb') as pdf_file:
+  pdf_reader = PyPDF2.PdfReader(pdf_file)
+  for page in pdf_reader.pages:
+    text = page.extract_text()
+    if text:
+      doc.add_paragraph(text)
+      word_filename = pdf_filename.replace('.pdf', '.docx')
+    doc.save(word_filename)
+print(f"Converted Word document saved as: {word_filename}")
+#Download The Word Document
+from google.colab import files
+files.download(word_filename)
